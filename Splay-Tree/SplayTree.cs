@@ -1,10 +1,11 @@
-﻿
-
-namespace Splay_Tree
+﻿namespace Splay_Tree
 {
     public class SplayTree<T> where T : IComparable<T>
     {
         public Node<T> Root;
+
+        public int Iterations = 0;
+
         public class Node<T> where T : IComparable<T>
         {
             public T Value;
@@ -32,10 +33,7 @@ namespace Splay_Tree
                 return;
             }
             Root = Splay(value);
-            if (value.CompareTo(Root.Value) == 0)
-            {
-                return;
-            }
+
             Node<T> node = new Node<T>(value);
             if (value.CompareTo(Root.Value) < 0)
             {
@@ -50,6 +48,7 @@ namespace Splay_Tree
                 Root.Right = null;
             }
             Root = node;
+            Count++;
         }
 
         public Node<T> Splay(T value)
@@ -61,6 +60,7 @@ namespace Splay_Tree
         // descendant - потомок
         public Node<T> Zig(Node<T> ancestor, T descendant)
         {
+            Iterations++;
             if (ancestor.Left == null)
                 return ancestor;
             if (ancestor.Left.Value.CompareTo(descendant) < 0)
@@ -71,6 +71,7 @@ namespace Splay_Tree
 
         public Node<T> ZigZig(Node<T> ancestor, T descendant)
         {
+            Iterations++;
             if (ancestor.Right == null)
                 return ancestor;
             if (ancestor.Right.Value.CompareTo(descendant) > 0)
@@ -81,6 +82,7 @@ namespace Splay_Tree
 
         public Node<T> ZigZag(Node<T> ancestor, T descendant)
         {
+            Iterations++;
             if (ancestor == null) return null;
             if (ancestor.Value.Equals(descendant)) return ancestor;
             
@@ -106,7 +108,7 @@ namespace Splay_Tree
         {
             Root = Splay(value);
 
-            if (Root.Value.Equals(value))
+            if (Root.Value.CompareTo(value) == 0)
             {
                 return true;
             }
