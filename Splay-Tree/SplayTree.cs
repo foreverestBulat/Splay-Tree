@@ -58,7 +58,7 @@
 
         // ancestor - предок
         // descendant - потомок
-        public Node<T> Zig(Node<T> ancestor, T descendant)
+        private Node<T> ZigRight(Node<T> ancestor, T descendant)
         {
             Iterations++;
             if (ancestor.Left == null)
@@ -66,10 +66,10 @@
             if (ancestor.Left.Value.CompareTo(descendant) < 0)
                 return ancestor;
             ancestor = RotateRight(ancestor);
-            return Zig(ancestor, descendant);
+            return ZigRight(ancestor, descendant);
         }
 
-        public Node<T> ZigZig(Node<T> ancestor, T descendant)
+        private Node<T> ZigLeft(Node<T> ancestor, T descendant)
         {
             Iterations++;
             if (ancestor.Right == null)
@@ -77,10 +77,10 @@
             if (ancestor.Right.Value.CompareTo(descendant) > 0)
                 return ancestor;
             ancestor = RotateLeft(ancestor);
-            return ZigZig(ancestor, descendant);
+            return ZigLeft(ancestor, descendant);
         }
 
-        public Node<T> ZigZag(Node<T> ancestor, T descendant)
+        private Node<T> ZigZag(Node<T> ancestor, T descendant)
         {
             Iterations++;
             if (ancestor == null) return null;
@@ -88,13 +88,13 @@
             
             if (descendant.CompareTo(ancestor.Value) < 0)
             {
-                ancestor = Zig(ancestor, descendant);
+                ancestor = ZigRight(ancestor, descendant);
                 ancestor.Left = ZigZag(ancestor.Left, descendant);
                 if (ancestor.Left == null) return ancestor;
             }
             else
             {
-                ancestor = ZigZig(ancestor, descendant);
+                ancestor = ZigLeft(ancestor, descendant);
                 ancestor.Right = ZigZag(ancestor.Right, descendant);
                 if (ancestor.Right == null) return ancestor;
             }
@@ -141,7 +141,7 @@
             }
         }
 
-        public Node<T> RotateRight(Node<T> node)
+        private Node<T> RotateRight(Node<T> node)
         {
             Node<T> temp = node.Left;
             node.Left = temp.Right;
@@ -149,7 +149,7 @@
             return temp;
         }
 
-        public Node<T> RotateLeft(Node<T> node)
+        private Node<T> RotateLeft(Node<T> node)
         {
             Node<T> temp = node.Right;
             node.Right = temp.Left;
